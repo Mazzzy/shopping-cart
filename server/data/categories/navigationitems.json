@@ -1,0 +1,15 @@
+{
+  "path": "categories",
+  "children": [
+    {
+      "categoryName": "New in our shop",
+      "id": "123456",
+      "mediaUrl": "https://ing.nl/punten/media/file/26839.png"
+    },
+    {
+      "categoryName": "Promotions",
+      "id": "654321",
+      "mediaUrl": "https://ing.nl/punten/media/file/26786.png"
+    }
+  ]
+}

@@ -17,7 +17,7 @@ export class ShopHome extends LitElement {
   
     constructor() {
       super();
-      this.title = 'Shopping cart app';
+      this.title = 'Welcome to main home!';
     }
   
     render() {
@@ -26,7 +26,6 @@ export class ShopHome extends LitElement {
           <div class="logo"><img alt="open-wc logo" src=${logo} /></div>
           <h1>${this.title}</h1>
         </main>
-  
         <p class="app-footer">
           Made with love by
           <a

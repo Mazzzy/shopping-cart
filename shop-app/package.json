@@ -16,7 +16,10 @@
   },
   "dependencies": {
     "@vaadin/router": "^1.7.4",
-    "lit": "^2.0.0-rc.4"
+    "lit": "^2.0.0-rc.4",
+    "pwa-helpers": "^0.9.1",
+    "redux": "^4.1.1",
+    "reselect": "^4.0.0"
   },
   "devDependencies": {
     "@babel/preset-env": "^7.15.6",

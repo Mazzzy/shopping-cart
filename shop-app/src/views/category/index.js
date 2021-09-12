@@ -1,16 +1,14 @@
 import { LitElement, html } from 'lit';
+import { connect } from 'pwa-helpers';
+import { store } from '../../store';
+
 import { defineCustomElement } from '../../utils';
 
 import { categoryStyles }  from './category-styles.js';
-
-export class ShopCategory extends LitElement {
+export class ShopCategory extends connect(store)(LitElement) {
     
     static get styles() {
       return categoryStyles;
-    }
-  
-    constructor() {
-      super();
     }
   
     render() {

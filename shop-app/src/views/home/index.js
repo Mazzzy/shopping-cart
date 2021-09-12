@@ -1,40 +1,25 @@
 import { LitElement, html } from 'lit';
+import { connect } from 'pwa-helpers';
+import { store } from '../../store';
+
 import { defineCustomElement } from '../../utils';
 
 const logo = new URL('../../../assets/open-wc-logo.svg', import.meta.url).href;
 import { homeStyles }  from './home-styles.js';
 
-export class ShopHome extends LitElement {
-    static get properties() {
-      return {
-        title: { type: String },
-      };
-    }
-  
+export class ShopHome extends connect(store)(LitElement) {
+    
     static get styles() {
       return homeStyles;
-    }
-  
-    constructor() {
-      super();
-      this.title = 'Welcome to main home!';
     }
   
     render() {
       return html`
         <main>
           <div class="logo"><img alt="open-wc logo" src=${logo} /></div>
-          <h1>${this.title}</h1>
+          <h1>Home to your shopping needs</h1>
+          <p>Click specific category from top menu to browse through products!</p>
         </main>
-        <p class="app-footer">
-          Made with love by
-          <a
-            target="_blank"
-            rel="noopener noreferrer"
-            href="https://github.com/Mazzzy"
-            >Mazzzy</a
-          >.
-        </p>
       `;
     }
 }

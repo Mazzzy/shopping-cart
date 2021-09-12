@@ -1,30 +1,29 @@
 import { LitElement, html } from 'lit';
+import { connect } from 'pwa-helpers';
+import { store } from '../../store';
+
 import { defineCustomElement } from '../../utils';
 
+import './header';
+import './footer';
 import { layoutStyles }  from './layout-styles.js';
-
-export class ShopLayout extends LitElement {
+export class ShopLayout extends connect(store)(LitElement) {
     
     static get styles() {
       return layoutStyles;
     }
-  
-    constructor() {
-      super();
-    }
-  
+
     render() {
       return html`
-      <div class="topnav">
-        <a class="active" href="/">Home</a>
-        <a href="/category/1">category1</a>
-        <a href="/category/1">category2</a>
-      </div>
-      <div class="header">
-        <h2>Shopping app - select respective category</h2>
-      </div>
-
-      <slot></slot>
+        <div>
+          <shop-app-header></shop-app-header>
+          <!-- for routed views : start -->
+            <div class="main-contents">
+              <slot></slot>
+            </div>
+          <!-- for routed views : end -->
+          <shop-app-footer></shop-app-footer>
+        </div>
       `;
     }
 }

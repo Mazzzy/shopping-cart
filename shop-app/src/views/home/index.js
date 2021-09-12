@@ -1,6 +1,10 @@
 import { LitElement, html } from 'lit';
 import { connect } from 'pwa-helpers';
 import { store } from '../../store';
+import { setCategories } from '../../store/actions';
+
+import { API_DETAILS } from '../../lib/config';
+import { getCategories } from '../../lib/services';
 
 import { defineCustomElement } from '../../utils';
 
@@ -11,6 +15,25 @@ export class ShopHome extends connect(store)(LitElement) {
     
     static get styles() {
       return homeStyles;
+    }
+  
+    connectedCallback() {
+      super.connectedCallback();
+      this._getCategories();
+    }
+
+    async _getCategories() {
+      try {
+        const getCategoriesURL = API_DETAILS.BASE_URL + API_DETAILS.GET_CATEGORIES;
+        // get categories via service (API) call
+        const respData = await getCategories(getCategoriesURL);
+        if(respData && respData.length) {
+          // set the fetched categories in store
+          store.dispatch(setCategories(respData));
+        }
+      } catch (error) {
+        console.log('Error in getting categories', error)
+      }
     }
   
     render() {

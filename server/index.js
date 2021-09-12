@@ -14,12 +14,6 @@ server.get('/', (req, res) => {
 });
 
 server.get('/categories', (req, res) => {
-    const products = getProductsByCategory('123456');
-    res.json(products);
-    // res.json(categories);
-});
-
-server.get('/categories', (req, res) => {
     res.json(categories);
 });
 

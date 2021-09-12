@@ -15,7 +15,7 @@ const routes = [
             },
             {
                 path: 'category/:id',
-                component: 'shop-category-products',
+                component: 'shop-category',
                 action: async () => {
                     await import('./views/category');
                 }

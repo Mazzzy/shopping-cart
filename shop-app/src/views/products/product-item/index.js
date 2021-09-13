@@ -2,6 +2,8 @@ import { LitElement, html } from 'lit';
 import { connect } from 'pwa-helpers';
 
 import { store } from '../../../store';
+import { addToCart } from '../../../store/actions';
+
 import { CONSTANTS } from '../../../lib/config';
 import { defineCustomElement, formatCurrency } from '../../../utils';
 
@@ -24,13 +26,13 @@ export class ProductItem extends connect(store)(LitElement) {
     };
   }
 
-  handleAddToCartClick = () => {
-    console.log('Hello from:', typeof this.productId)
+  addProductToCart({ productId, name, url, sellingPrice }) {
+    // add the product in cart (store)
+    store.dispatch(addToCart({ productId, name, url, sellingPrice }))
   }
   
-
   render() {
-    const { name, price, media } = this;
+    const { productId, name, price, media } = this;
     const { sellingPrice } = price;
     const { url } = media;
     return html `
@@ -45,7 +47,9 @@ export class ProductItem extends connect(store)(LitElement) {
             <shop-button
               .name=${"addToCartBtn"}
               .className=${"primary"}
-              .handleClick=${this.handleAddToCartClick}
+              .handleClick=${() => {
+                this.addProductToCart({ productId, name, url, sellingPrice });
+              }}
             >
               Add to cart
             </shop-button>

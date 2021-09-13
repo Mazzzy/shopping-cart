@@ -11,3 +11,10 @@ export const storeLogger = store => next => action => {
   console.log('next state', store.getState());
   return result;
 }
+
+// helpers
+// format currency value and display along with symbol
+export const formatCurrency = (type, num) => (`${type} ${Number(num.toFixed(1)).toLocaleString()}`);
+
+// handle null/undefined properties for custom components
+export const escapeNullUndefinedAttrVal = (attrVal) => (attrVal || '');

@@ -1,5 +1,6 @@
 import { LitElement, html } from 'lit';
 import { repeat } from 'lit/directives/repeat.js';
+import { Router } from '@vaadin/router';
 import { connect } from 'pwa-helpers';
 import { store } from '../../store';
 
@@ -69,7 +70,9 @@ export class ShopCart extends connect(store)(LitElement) {
                     .name=${"proceedToCheckoutBtn"}
                     .className=${"primary"}
                     .handleClick=${() => {
-                      console.log('Proceed clicked')
+                      console.log('Proceed clicked');
+                      // move to checkout view
+                      Router.go('/checkout');
                     }}
                   >
                     Proceed

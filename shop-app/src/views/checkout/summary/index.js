@@ -5,7 +5,6 @@ import { store } from '../../../store';
 
 import { defineCustomElement, formatCurrency } from '../../../utils';
 import { getAvailableCartSelector } from '../../../store/actions';
-import { CONSTANTS } from '../../../lib/config';
 
 import '../../../components/button';
 import './summary-item';
@@ -55,7 +54,6 @@ export class ShopCheckoutSummary extends connect(store)(LitElement) {
                 <span class="price">
                   ${
                     formatCurrency(
-                      CONSTANTS.CURRENCY, 
                       cartItems.reduce((a, c) => a + c.sellingPrice * c.count, 0))
                   }
                 </span>
@@ -64,7 +62,7 @@ export class ShopCheckoutSummary extends connect(store)(LitElement) {
                 shipping
                 <span class="price">
                   ${
-                    formatCurrency(CONSTANTS.CURRENCY, 35)
+                    formatCurrency(35)
                   }
                 </span>
               </p>
@@ -72,7 +70,7 @@ export class ShopCheckoutSummary extends connect(store)(LitElement) {
                 vat (included)
                 <span class="price">
                   ${
-                    formatCurrency(CONSTANTS.CURRENCY, 15)
+                    formatCurrency(15)
                   }
                 </span>
               </p>
@@ -80,7 +78,7 @@ export class ShopCheckoutSummary extends connect(store)(LitElement) {
                 grand total
                 <span class="price grand-total">
                   ${
-                    formatCurrency(CONSTANTS.CURRENCY, 20+35+15)
+                    formatCurrency(20+35+15)
                   }
                 </span>
               </p>

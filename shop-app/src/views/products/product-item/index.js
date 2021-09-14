@@ -4,7 +4,6 @@ import { connect } from 'pwa-helpers';
 import { store } from '../../../store';
 import { addToCart } from '../../../store/actions';
 
-import { CONSTANTS } from '../../../lib/config';
 import { defineCustomElement, formatCurrency } from '../../../utils';
 
 import '../../../components/card';
@@ -43,7 +42,7 @@ export class ProductItem extends connect(store)(LitElement) {
             <p>${name}</p>
           </a>
           <div class="product-price">
-            <div>${sellingPrice ? formatCurrency(CONSTANTS.CURRENCY, sellingPrice) : 'NA'}</div>
+            <div>${sellingPrice ? formatCurrency(sellingPrice) : '0'}</div>
             <shop-button
               .name=${"addToCartBtn"}
               .className=${"primary"}

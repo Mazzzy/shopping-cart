@@ -5,7 +5,6 @@ import { connect } from 'pwa-helpers';
 import { store } from '../../store';
 
 import { getAvailableCartSelector } from '../../store/actions';
-import { CONSTANTS } from '../../lib/config';
 import { defineCustomElement, formatCurrency } from '../../utils';
 
 import './cart-item';
@@ -63,7 +62,6 @@ export class ShopCart extends connect(store)(LitElement) {
                   html `Total: ${" "}
                   ${
                     formatCurrency(
-                      CONSTANTS.CURRENCY, 
                       cartItems.reduce((a, c) => a + c.sellingPrice * c.count, 0))
                   }
                   <shop-button

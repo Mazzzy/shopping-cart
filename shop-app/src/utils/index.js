@@ -1,3 +1,5 @@
+import { CONSTANTS } from '../lib/config';
+
 // configurable define custom element call
 export const defineCustomElement = (tagName, element) => {
     if (!customElements.get(tagName)) {
@@ -14,7 +16,7 @@ export const storeLogger = store => next => action => {
 
 // helpers
 // format currency value and display along with symbol
-export const formatCurrency = (type, num) => (`${type} ${Number(num.toFixed(1)).toLocaleString()}`);
+export const formatCurrency = (num) => (`${CONSTANTS.CURRENCY} ${Number(num.toFixed(1)).toLocaleString()}`);
 
 // handle null/undefined properties for custom components
 export const escapeNullUndefinedAttrVal = (attrVal) => (attrVal || '');

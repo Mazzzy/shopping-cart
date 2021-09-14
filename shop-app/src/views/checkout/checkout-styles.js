@@ -7,11 +7,9 @@ export const checkoutStyles = css`
     .checkout-content {
         display: flex;
         flex-wrap: wrap;
+        padding: 0.8rem 1.6rem;
     }
-    .checkout-main {
-        flex: 2 40rem;
-    }
-    .checkout-sidebar {
+    .checkout-item {
         flex: 1 20rem;
     }
 `;

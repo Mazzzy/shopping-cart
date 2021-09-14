@@ -28,6 +28,13 @@ const routes = [
                 }
             },
             {
+                path: 'checkout',
+                component: 'shop-checkout',
+                action: async () => {
+                    await import('./views/checkout');
+                }
+            },
+            {
                 path: '(.*)',
                 component: 'not-found',
                 action: async () => { 

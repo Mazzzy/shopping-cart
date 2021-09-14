@@ -6,6 +6,8 @@ import { defineCustomElement } from '../../utils';
 
 import './shipment';
 import './payment';
+import './summary';
+
 import { checkoutStyles }  from './checkout-styles.js';
 export class ShopCheckout extends connect(store)(LitElement) {
     
@@ -28,7 +30,7 @@ export class ShopCheckout extends connect(store)(LitElement) {
       const { enablePayment } = this;
       return html`
         <div class="checkout-content">
-          <div class="checkout-main">
+          <div class="checkout-item">
             <shop-shipment 
               .enablePayment=${(flag) => {
                 console.log('Payment enabled:', flag);
@@ -36,8 +38,11 @@ export class ShopCheckout extends connect(store)(LitElement) {
               }}
             ></shop-shipment>
           </div>
-          <div class="checkout-sidebar">
+          <div class="checkout-item">
             ${enablePayment ? (html `<shop-payment></shop-payment>`) : ''}
+          </div>
+          <div class="checkout-item">
+              <shop-checkout-summary></shop-checkout-summary>
           </div>
         </div>
       `;

@@ -51,6 +51,12 @@ export class Header extends connect(store)(LitElement) {
                 ${categoryName}
               </a>`;
           })}
+          <a
+            class="active"
+            href="/cart"
+          >
+            Cart
+          </a>
         </div>
         <div class="header">
           <h2>Welcome to Shopping app - select respective category to browse products</h2>

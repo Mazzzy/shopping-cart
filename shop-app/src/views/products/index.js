@@ -26,20 +26,20 @@ export class ShopProducts extends connect(store)(LitElement) {
       this.products = getAvailableProductsSelector(state);
     }
 
-    productItem({ productId, name, price, media }) {
+    renderProductItem({ productId, name, price, media }) {
       return html `
         <shop-product-item .productId=${productId} .name=${name} .price=${price} .media=${media}></shop-product-item>
       `;
     }
 
     render() {
-      const { products, productItem } = this;
+      const { products, renderProductItem } = this;
       // repeat: directive for efficient template list items 
       return html`
         <ul class="products-container">
           ${repeat(products, (product) => product.productId, (product) => {
             return html`
-              <li>${productItem(product)}</li>
+              <li>${renderProductItem(product)}</li>
             `;
           })}
         </ul>

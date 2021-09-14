@@ -22,7 +22,7 @@ export class ProductItem extends connect(store)(LitElement) {
       productId: { type: Number },
       name: { type: String },
       price: { type: Object },
-      media: { type: String }
+      media: { type: Object }
     };
   }
 

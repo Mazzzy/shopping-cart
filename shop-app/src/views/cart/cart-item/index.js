@@ -41,7 +41,7 @@ export class CartItem extends connect(store)(LitElement) {
         <div>
           <div>${name}</div>
           <div class="right">
-            ${count} X ${sellingPrice ? formatCurrency(CONSTANTS.CURRENCY, sellingPrice) : 'NA'}
+            ${count} X ${sellingPrice ? formatCurrency(CONSTANTS.CURRENCY, sellingPrice) : '0'}
             <shop-button
               .name=${"removeFromCartBtn"}
               .className=${"secondary"}

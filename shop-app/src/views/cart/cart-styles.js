@@ -21,4 +21,21 @@ export const cartStyles = css`
     .cart-items li {
         display: flex;
     }
+
+    .total {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    
+    .total div,
+    .total button {
+        flex: 1;
+        text-align: center;
+    }
+
+    .total div {
+        font-size: 2rem;
+    }
 `;

@@ -4,9 +4,11 @@ import { connect } from 'pwa-helpers';
 import { store } from '../../store';
 
 import { getAvailableCartSelector } from '../../store/actions';
-import { defineCustomElement } from '../../utils';
+import { CONSTANTS } from '../../lib/config';
+import { defineCustomElement, formatCurrency } from '../../utils';
 
 import './cart-item';
+import '../../components/button';
 import { cartStyles }  from './cart-styles.js';
 
 export class ShopCart extends connect(store)(LitElement) {
@@ -34,12 +36,13 @@ export class ShopCart extends connect(store)(LitElement) {
     
     render() {
       const { cartItems, renderCartItem } = this;
+      const cartItemsLength = cartItems && cartItems.length;
       // repeat: directive for efficient template list items 
       return html`
         <div class="cart-row cart-header">
-          ${cartItems && cartItems.length === 0 ? 
+          ${cartItemsLength === 0 ? 
             (html `<span>Shopping cart is empty</span`) : 
-            (html `<span>You have ${cartItems.length} products in the cart.</span>`)
+            (html `<span>You have ${cartItemsLength} products in the cart.</span>`)
           }
         </div>
         <div class="cart-row">
@@ -50,6 +53,33 @@ export class ShopCart extends connect(store)(LitElement) {
               `;
             })}
           </ul>
+        </div>
+        <div class="cart-row">
+          <div class="total">
+            <div>
+              ${cartItemsLength ? 
+                (
+                  html `Total: ${" "}
+                  ${
+                    formatCurrency(
+                      CONSTANTS.CURRENCY, 
+                      cartItems.reduce((a, c) => a + c.sellingPrice * c.count, 0))
+                  }
+                  <shop-button
+                    .name=${"proceedToCheckoutBtn"}
+                    .className=${"primary"}
+                    .handleClick=${() => {
+                      console.log('Proceed clicked')
+                    }}
+                  >
+                    Proceed
+                  </shop-button>
+                  `
+                ) : 
+                (html ``)
+              }
+            </div>
+          </div>
         </div>
       `;
     }

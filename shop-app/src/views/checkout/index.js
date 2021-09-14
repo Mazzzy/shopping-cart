@@ -29,7 +29,6 @@ export class ShopCheckout extends connect(store)(LitElement) {
       return html`
         <div class="checkout-content">
           <div class="checkout-main">
-            <h1>Checkout Info details</h1>
             <shop-shipment 
               .enablePayment=${(flag) => {
                 console.log('Payment enabled:', flag);

@@ -21,6 +21,13 @@ const routes = [
                 }
             },
             {
+                path: 'cart',
+                component: 'shop-cart',
+                action: async () => {
+                    await import('./views/cart');
+                }
+            },
+            {
                 path: '(.*)',
                 component: 'not-found',
                 action: async () => { 

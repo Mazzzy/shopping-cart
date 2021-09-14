@@ -2,7 +2,7 @@ import { createStore, compose, combineReducers, applyMiddleware } from 'redux'
 import { lazyReducerEnhancer } from 'pwa-helpers'
 
 import { storeLogger } from '../utils';
-import { categoriesReducer, productsReducer } from './reducers';
+import { categoriesReducer, productsReducer, cartReducer } from './reducers';
 
 // init store state
 const initialState = {}
@@ -19,7 +19,8 @@ const configureStore = preloadedState => (
 // combine reducers
 const rootReducer = {
   categories: categoriesReducer,
-  products: productsReducer
+  products: productsReducer,
+  cart: cartReducer
 };
 
 // configure store and add reducers

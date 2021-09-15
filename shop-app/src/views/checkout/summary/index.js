@@ -4,7 +4,12 @@ import { connect } from 'pwa-helpers';
 import { store } from '../../../store';
 
 import { defineCustomElement, formatCurrency } from '../../../utils';
-import { getAvailableCartSelector } from '../../../store/actions';
+import { 
+  createOrder,
+  getAvailableCartSelector, 
+  getAvailableCheckoutShipmentSelector, 
+  getAvailableCheckoutPaymentSelector 
+} from '../../../store/actions';
 
 import '../../../components/button';
 import './summary-item';
@@ -17,13 +22,18 @@ export class ShopCheckoutSummary extends connect(store)(LitElement) {
 
   static get properties() {
     return {
-      cartItems: { type: Array }
+      cartItems: { type: Array },
+      shipmentDetails: { type: Object },
+      paymentDetails: { type: Object },
     };
   }
 
   stateChanged(state) { 
     // get cart items (selected products) from the store
     this.cartItems = getAvailableCartSelector(state);
+    // get available checkout details (shipmeny & payment) from store for placing order
+    this.shipmentDetails = getAvailableCheckoutShipmentSelector(state);
+    this.paymentDetails = getAvailableCheckoutPaymentSelector(state);
   }
 
   renderSummaryCartItem({ productId, name, sellingPrice, url, count }) {
@@ -32,8 +42,23 @@ export class ShopCheckoutSummary extends connect(store)(LitElement) {
     `;
   }
 
+  handlePlaceOrder = () => {
+    const { shipmentDetails, paymentDetails, cartItems } = this;
+    const orderData = {
+      person: {
+        ...shipmentDetails,
+        ...paymentDetails
+      },
+      products: {
+        ...cartItems
+      }
+    }
+    // create and place order
+    store.dispatch(createOrder(orderData));
+  }
+
   render() {
-    const { cartItems, renderSummaryCartItem } = this;
+    const { cartItems, renderSummaryCartItem, handlePlaceOrder } = this;
     const cartItemsLength = cartItems && cartItems.length;
     // repeat: directive for efficient template list items 
     return html`
@@ -87,9 +112,7 @@ export class ShopCheckoutSummary extends connect(store)(LitElement) {
             <shop-button
               .name=${"placeOrderBtn"}
               .className=${"primary"}
-              .handleClick=${() => {
-                console.log('Order Placed');
-              }}
+              .handleClick=${handlePlaceOrder}
             >
               Pay & Place Order
             </shop-button>

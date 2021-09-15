@@ -4,6 +4,8 @@ import { connect } from 'pwa-helpers';
 import { store } from '../../../store';
 
 import { defineCustomElement, formatCurrency } from '../../../utils';
+import { API_DETAILS } from '../../../lib/config';
+import { postApiDataByUrl } from '../../../lib/services';
 import { 
   createOrder,
   getAvailableCartSelector, 
@@ -53,8 +55,27 @@ export class ShopCheckoutSummary extends connect(store)(LitElement) {
         ...cartItems
       }
     }
-    // create and place order
-    store.dispatch(createOrder(orderData));
+    
+    // save the order 
+    this._saveOrder(orderData);
+  }
+
+  async _saveOrder(orderData) {
+    try {
+      const saveOrderURL = API_DETAILS.ORDER_URL;
+      // save order via service (API) call
+      const respData = await postApiDataByUrl(saveOrderURL, orderData);
+      console.log('respData', respData);
+      if(respData && respData.length) {
+        
+        console.log('respData', respData);
+        alert(respData);
+        // create and place order
+        store.dispatch(createOrder(orderData));
+      }
+    } catch (error) {
+      console.log('Error in saving order', error)
+    }
   }
 
   render() {

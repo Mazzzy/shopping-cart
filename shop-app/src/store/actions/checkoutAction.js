@@ -1,3 +1,4 @@
+import { createSelector } from 'reselect';
 import { ADD_SHIPMENT_FOR_CHECKOUT, ADD_PAYMENT_FOR_CHECKOUT, CLEAR_CHECKOUT } from '../types';
 
 // dispatched to add shipment details
@@ -22,3 +23,18 @@ export const clearCheckout = () => {
     type: CLEAR_CHECKOUT
   }
 };
+
+// selectors to get checkout (shipment or payment) details from store
+const getCheckoutSelector = state => state.checkout;
+
+// get available shipment info from the store
+export const getAvailableCheckoutShipmentSelector = createSelector(
+  getCheckoutSelector,
+  ({ shipment }) => (shipment)
+);
+
+// get available payment info from the store
+export const getAvailableCheckoutPaymentSelector = createSelector(
+  getCheckoutSelector,
+  ({ payment }) => (payment)
+);

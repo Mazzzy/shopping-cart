@@ -4,7 +4,6 @@ import { connect } from 'pwa-helpers';
 import { store } from '../../../store';
 import { removeFromCart } from '../../../store/actions';
 
-import { CONSTANTS } from '../../../lib/config';
 import { defineCustomElement, formatCurrency } from '../../../utils';
 
 import '../../../components/button';
@@ -41,7 +40,7 @@ export class CartItem extends connect(store)(LitElement) {
         <div>
           <div>${name}</div>
           <div class="right">
-            ${count} X ${sellingPrice ? formatCurrency(CONSTANTS.CURRENCY, sellingPrice) : '0'}
+            ${count} X ${sellingPrice ? formatCurrency(sellingPrice) : '0'}
             <shop-button
               .name=${"removeFromCartBtn"}
               .className=${"secondary"}

@@ -1,6 +1,7 @@
 import { LitElement, html } from 'lit';
 import { connect } from 'pwa-helpers';
 import { store } from '../../../store';
+import { addShipmentInCheckout } from '../../../store/actions';
 
 import { defineCustomElement } from '../../../utils';
 import '../../../components/textbox';
@@ -86,6 +87,9 @@ export class ShopShipment extends connect(store)(LitElement) {
                       .handleClick=${() => {
                         console.log('Display payment option')
                         this.triggerEnablePayment();
+
+                        // store shipment details in store
+                        store.dispatch(addShipmentInCheckout({ email, name, address }));
                       }}
                     >
                       Proceed to Pay

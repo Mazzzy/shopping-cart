@@ -17,17 +17,19 @@ export class ShopCheckout extends connect(store)(LitElement) {
 
     static get properties() {
       return {
-        enablePayment: { type: Boolean }
+        enablePayment: { type: Boolean },
+        enableOrderSummary: { type: Boolean}
       };
     }
 
     constructor() {
       super();
       this.enablePayment = false;
+      this.enableOrderSummary = false;
     }
 
     render() {
-      const { enablePayment } = this;
+      const { enablePayment, enableOrderSummary } = this;
       return html`
         <div class="checkout-content">
           <div class="checkout-item">
@@ -39,10 +41,17 @@ export class ShopCheckout extends connect(store)(LitElement) {
             ></shop-shipment>
           </div>
           <div class="checkout-item">
-            ${enablePayment ? (html `<shop-payment></shop-payment>`) : ''}
+            ${enablePayment ? (html `
+              <shop-payment
+                .enableOrderSummary=${(flag) => {
+                  console.log('Order summary enabled:', flag);
+                  this.enableOrderSummary = flag;
+                }}
+              ></shop-payment>
+            `) : ''}
           </div>
           <div class="checkout-item">
-              <shop-checkout-summary></shop-checkout-summary>
+              ${enableOrderSummary ? (html `<shop-checkout-summary></shop-checkout-summary>`) : ''}
           </div>
         </div>
       `;

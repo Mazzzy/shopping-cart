@@ -1,9 +1,9 @@
 import { LitElement, html } from 'lit';
 import { connect } from 'pwa-helpers';
 import { store } from '../../../store';
+import { addPaymentInCheckout } from '../../../store/actions';
 
 import { defineCustomElement } from '../../../utils';
-
 import { paymentStyles }  from './payment-styles.js';
 export class ShopPayment extends connect(store)(LitElement) {
     
@@ -13,6 +13,7 @@ export class ShopPayment extends connect(store)(LitElement) {
 
   static get properties() {
     return {
+      enableOrderSummary: { type: Function },
       cardHolderName: { type: String },
       cardNumber: { type: Number },
       cardExpiry: { type: String },
@@ -36,6 +37,10 @@ export class ShopPayment extends connect(store)(LitElement) {
 
   validateForm({ cardHolderName, cardNumber, cardExpiry, cardCVV }) {
     return cardHolderName && cardNumber && cardExpiry && cardCVV;
+  }
+
+  triggerEnableOrderSummary() {
+    this.enableOrderSummary(true)
   }
 
   render() {
@@ -74,6 +79,7 @@ export class ShopPayment extends connect(store)(LitElement) {
             <li>
               <label for="cardCVV">Card CVV:</label>
               <shop-textbox
+                .type=${"password"}
                 .number=${"number"}
                 .name=${"cardCVV"}
                 .value=${cardCVV}
@@ -89,6 +95,9 @@ export class ShopPayment extends connect(store)(LitElement) {
                     .className=${"primary"}
                     .handleClick=${() => {
                       console.log('Order place?')
+                      this.triggerEnableOrderSummary();
+                      // store payment details in store
+                      store.dispatch(addPaymentInCheckout({ cardHolderName, cardNumber, cardExpiry, cardCVV }));
                     }}
                   >
                     Place Order

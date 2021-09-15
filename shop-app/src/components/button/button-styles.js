@@ -5,6 +5,7 @@ export const buttonStyles = css`
         padding: 1rem;
         border: 0.1rem #808080 solid;
         cursor: pointer;
+        width:100%;
     }
     .button:hover {
         border: 0.1rem #404040 solid;

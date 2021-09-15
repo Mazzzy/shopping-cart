@@ -2,7 +2,6 @@ import { LitElement, html } from 'lit';
 import { connect } from 'pwa-helpers';
 import { store } from '../../../../store';
 
-import { CONSTANTS } from '../../../../lib/config';
 import { defineCustomElement, formatCurrency } from '../../../../utils';
 
 import { summaryItemStyles }  from './summary-item-styles.js';
@@ -30,7 +29,7 @@ export class ShopCheckoutSummaryItem extends connect(store)(LitElement) {
         <div class="info">
           <span class="title">${name}</span>
           <span class="count">x${count}</span>
-          <p class="price">${sellingPrice ? formatCurrency(CONSTANTS.CURRENCY, sellingPrice) : '0'}</p>
+          <p class="price">${sellingPrice ? formatCurrency(sellingPrice) : '0'}</p>
         </div>
       </div>
     `;

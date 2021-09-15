@@ -52,11 +52,12 @@ export class Header extends connect(store)(LitElement) {
               </a>`;
           })}
           <a
-            class="active"
+            class="cart-icon"
             href="/cart"
           >
             Cart
           </a>
+          <span class="clear"></span>
         </div>
         <div class="header">
           <h2>Welcome to Shopping app - select respective category to browse products</h2>

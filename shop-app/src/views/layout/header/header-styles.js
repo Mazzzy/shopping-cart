@@ -5,7 +5,7 @@ export const headerStyles = css`
     padding: 20px;
     font-size: 25px;
     text-align: center;
-    background: white;
+    background: #ffffff;
   }
 
   .topnav {
@@ -29,6 +29,21 @@ export const headerStyles = css`
 
   .topnav a.active {
     background-color: #008cba;
-    color: white;
+    color: #ffffff;
+  }
+
+  .topnav a.cart-icon {
+    background-color: rgb(240, 192, 64);
+    color: #4f4c4c;
+    float: right;
+  }
+
+  .topnav a.cart-icon:hover {
+    background-color: rgb(260, 194, 66);
+    color: #ffffff;
+  }
+
+  .topnav span.clear {
+    clear: both;
   }
 `;

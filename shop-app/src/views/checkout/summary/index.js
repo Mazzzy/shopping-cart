@@ -37,6 +37,7 @@ export class ShopCheckoutSummary extends connect(store)(LitElement) {
     const cartItemsLength = cartItems && cartItems.length;
     // repeat: directive for efficient template list items 
     return html`
+      <h1>Selected Products Details:</h1>
       <div class="summary-container">
         ${cartItemsLength !== 0 ? 
           (html `
@@ -92,7 +93,9 @@ export class ShopCheckoutSummary extends connect(store)(LitElement) {
             >
               Pay & Place Order
             </shop-button>
-          `) : ''}
+          `) : 
+          (html `<span>Order summary is empty</span`)
+        }
       </div>
     `;
   }

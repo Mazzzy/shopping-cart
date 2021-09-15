@@ -48,7 +48,7 @@ const orderRoutes = (app, fs) => {
             data[newOrderId.toString()] = req.body;
 
             writeFile(JSON.stringify(data, null, 2), () => {
-                res.status(200).send('New Order added');
+                res.status(200).json('New Order added');
             });
         },
             true);
@@ -65,7 +65,7 @@ const orderRoutes = (app, fs) => {
             data[orderId] = req.body;
 
             writeFile(JSON.stringify(data, null, 2), () => {
-                res.status(200).send(`Order id:${userId} updated`);
+                res.status(200).json(`Order id:${userId} updated`);
             });
         },
             true);
@@ -82,7 +82,7 @@ const orderRoutes = (app, fs) => {
             delete data[orderId];
 
             writeFile(JSON.stringify(data, null, 2), () => {
-                res.status(200).send(`Order id:${userId} removed`);
+                res.status(200).json(`Order id:${userId} removed`);
             });
         },
             true);

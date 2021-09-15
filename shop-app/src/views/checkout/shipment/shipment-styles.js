@@ -4,8 +4,11 @@ export const shipmentStyles = css`
     .shipment-container {
         display: flex;
         flex-wrap: wrap;
-        padding: 10px;
-        margin: 10px;
+        flex-direction: column;
+        background-color: #ffffff;
+        border-radius: 12px;
+        padding: 1.5rem;
+        margin: 0.6rem;
     }
 
     /* forms */

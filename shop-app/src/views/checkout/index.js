@@ -7,6 +7,7 @@ import { defineCustomElement } from '../../utils';
 import './shipment';
 import './payment';
 import './summary';
+import './confirmation';
 
 import { checkoutStyles }  from './checkout-styles.js';
 export class ShopCheckout extends connect(store)(LitElement) {
@@ -18,7 +19,8 @@ export class ShopCheckout extends connect(store)(LitElement) {
     static get properties() {
       return {
         enablePayment: { type: Boolean },
-        enableOrderSummary: { type: Boolean}
+        enableOrderSummary: { type: Boolean },
+        enableConfirmation: { type: Boolean }
       };
     }
 
@@ -26,10 +28,11 @@ export class ShopCheckout extends connect(store)(LitElement) {
       super();
       this.enablePayment = false;
       this.enableOrderSummary = false;
+      this.enableConfirmation = false;
     }
 
     render() {
-      const { enablePayment, enableOrderSummary } = this;
+      const { enablePayment, enableOrderSummary, enableConfirmation } = this;
       return html`
         <div class="checkout-content">
           <div class="checkout-item">
@@ -51,9 +54,19 @@ export class ShopCheckout extends connect(store)(LitElement) {
             `) : ''}
           </div>
           <div class="checkout-item">
-              ${enableOrderSummary ? (html `<shop-checkout-summary></shop-checkout-summary>`) : ''}
+            ${enableOrderSummary ? (html `
+              <shop-checkout-summary
+                .enableConfirmation=${(flag) => {
+                  console.log('Confirmation msg enabled:', flag);
+                  this.enableConfirmation = flag;
+                }}
+              ></shop-checkout-summary>`) : ''}
           </div>
         </div>
+        ${enableConfirmation ? (html `
+          <shop-confirmation></shop-confirmation>
+        `) : ''}
+        <shop-confirmation></shop-confirmation>
       `;
     }
 }

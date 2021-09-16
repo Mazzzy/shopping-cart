@@ -5,7 +5,7 @@ import { connect } from 'pwa-helpers';
 import { store } from '../../store';
 
 import { getAvailableCartSelector } from '../../store/actions';
-import { defineCustomElement, formatCurrency } from '../../utils';
+import { defineCustomElement, formatCurrency, getCartItemsTotal } from '../../utils';
 
 import './cart-item';
 import '../../components/button';
@@ -61,8 +61,7 @@ export class ShopCart extends connect(store)(LitElement) {
                 (
                   html `Total: ${" "}
                   ${
-                    formatCurrency(
-                      cartItems.reduce((a, c) => a + c.sellingPrice * c.count, 0))
+                    formatCurrency(getCartItemsTotal(cartItems))
                   }
                   <shop-button
                     .name=${"proceedToCheckoutBtn"}

@@ -33,14 +33,13 @@ export const headerStyles = css`
   }
 
   .topnav a.cart-icon {
-    background-color: rgb(240, 192, 64);
-    color: #4f4c4c;
+    background-color: rgb(217, 126, 74);
+    color: #f0f0f0;
     float: right;
   }
 
   .topnav a.cart-icon:hover {
-    background-color: rgb(260, 194, 66);
-    color: #ffffff;
+    background-color: rgb(190, 94, 40);
   }
 
   .topnav span.clear {

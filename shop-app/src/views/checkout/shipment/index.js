@@ -40,6 +40,7 @@ export class ShopShipment extends connect(store)(LitElement) {
       return email && name && address;
     }
 
+    // trigger to enable flag for displaying payment options
     triggerEnablePayment() {
       this.enablePayment(true)
     }

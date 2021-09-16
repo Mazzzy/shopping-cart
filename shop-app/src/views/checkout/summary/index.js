@@ -3,7 +3,7 @@ import { repeat } from 'lit/directives/repeat.js';
 import { connect } from 'pwa-helpers';
 import { store } from '../../../store';
 
-import { defineCustomElement, formatCurrency } from '../../../utils';
+import { defineCustomElement, formatCurrency, getCartItemsTotal } from '../../../utils';
 import { API_DETAILS } from '../../../lib/config';
 import { postApiDataByUrl } from '../../../lib/services';
 import { 
@@ -24,6 +24,7 @@ export class ShopCheckoutSummary extends connect(store)(LitElement) {
 
   static get properties() {
     return {
+      enableConfirmation: { type: Function },
       cartItems: { type: Array },
       shipmentDetails: { type: Object },
       paymentDetails: { type: Object },
@@ -44,15 +45,17 @@ export class ShopCheckoutSummary extends connect(store)(LitElement) {
     `;
   }
 
-  handlePlaceOrder = () => {
+  // to place order 
+  triggerPlaceOrder = (amountDetails) => {
     const { shipmentDetails, paymentDetails, cartItems } = this;
     const orderData = {
       person: {
         ...shipmentDetails,
         ...paymentDetails
       },
-      products: {
-        ...cartItems
+      products: cartItems,
+      amountDetail: {
+        ...amountDetails
       }
     }
     
@@ -60,27 +63,54 @@ export class ShopCheckoutSummary extends connect(store)(LitElement) {
     this._saveOrder(orderData);
   }
 
-  async _saveOrder(orderData) {
+  // api call to place order
+  _saveOrder = async (orderData) => {
     try {
       const saveOrderURL = API_DETAILS.ORDER_URL;
       // save order via service (API) call
       const respData = await postApiDataByUrl(saveOrderURL, orderData);
-      console.log('respData', respData);
       if(respData && respData.length) {
-        
-        console.log('respData', respData);
-        alert(respData);
+        console.log('Save Order response:', respData);
         // create and place order
         store.dispatch(createOrder(orderData));
+
+        // show confirmation message
+        this.triggerEnableConfirmation();
       }
     } catch (error) {
       console.log('Error in saving order', error)
     }
   }
 
+  // trigger to enable flag for confirmation message display
+  triggerEnableConfirmation() {
+    this.enableConfirmation(true)
+  }
+
   render() {
-    const { cartItems, renderSummaryCartItem, handlePlaceOrder } = this;
+    const { cartItems, renderSummaryCartItem, triggerPlaceOrder } = this;
     const cartItemsLength = cartItems && cartItems.length;
+    let itemsTotal = 0;
+    let shippingAmount = 0;
+    let discountAmount = 0;
+    let grandTotal = 0;
+    let amountDetails = {}
+
+    if(cartItemsLength !== 0) {
+      itemsTotal = getCartItemsTotal(cartItems);
+      shippingAmount = 5;
+      discountAmount = 10;
+      grandTotal = itemsTotal + shippingAmount - discountAmount;
+
+      // to store amount details in order record
+      amountDetails = {
+        itemsTotal,
+        shippingAmount,
+        discountAmount,
+        grandTotal
+      }
+    }
+
     // repeat: directive for efficient template list items 
     return html`
       <h1>Selected Products Details:</h1>
@@ -100,8 +130,7 @@ export class ShopCheckoutSummary extends connect(store)(LitElement) {
                 total
                 <span class="price">
                   ${
-                    formatCurrency(
-                      cartItems.reduce((a, c) => a + c.sellingPrice * c.count, 0))
+                    formatCurrency(itemsTotal)
                   }
                 </span>
               </p>
@@ -109,15 +138,15 @@ export class ShopCheckoutSummary extends connect(store)(LitElement) {
                 shipping
                 <span class="price">
                   ${
-                    formatCurrency(35)
+                    formatCurrency(shippingAmount)
                   }
                 </span>
               </p>
               <p class="total-field">
-                vat (included)
+                Discount (included)
                 <span class="price">
                   ${
-                    formatCurrency(15)
+                    formatCurrency(discountAmount)
                   }
                 </span>
               </p>
@@ -125,7 +154,7 @@ export class ShopCheckoutSummary extends connect(store)(LitElement) {
                 grand total
                 <span class="price grand-total">
                   ${
-                    formatCurrency(20+35+15)
+                    formatCurrency(grandTotal)
                   }
                 </span>
               </p>
@@ -133,7 +162,11 @@ export class ShopCheckoutSummary extends connect(store)(LitElement) {
             <shop-button
               .name=${"placeOrderBtn"}
               .className=${"primary"}
-              .handleClick=${handlePlaceOrder}
+              .handleClick=${
+                () => { 
+                  triggerPlaceOrder(amountDetails) 
+                }
+              }
             >
               Pay & Place Order
             </shop-button>

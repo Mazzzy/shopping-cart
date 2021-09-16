@@ -2,13 +2,13 @@ import { LitElement, html } from 'lit';
 import { connect } from 'pwa-helpers';
 
 import { store } from '../../../store';
-import { removeFromCart } from '../../../store/actions';
+import { removeFromCart, toggleProductItemCountInCart } from '../../../store/actions';
 
 import { defineCustomElement, formatCurrency } from '../../../utils';
 
 import '../../../components/button';
+import '../../../components/countbutton';
 import { cartItemStyles }  from './cart-item-styles.js';
-
 export class CartItem extends connect(store)(LitElement) {
     
   static get styles() {
@@ -25,6 +25,11 @@ export class CartItem extends connect(store)(LitElement) {
     };
   }
 
+  toggleProductCount(type, productId) {
+    // toggle the product count based on type
+    store.dispatch(toggleProductItemCountInCart(type, productId))
+  }
+
   removeProductFromCart(productId) {
     // remove the product from cart (store)
     store.dispatch(removeFromCart(productId))
@@ -34,23 +39,37 @@ export class CartItem extends connect(store)(LitElement) {
     const { productId, name, sellingPrice, url, count } = this;
     return html `
       <div class="cart-item">
-        <div>
+        <div class="img-container">
           <img src=${url} alt=${name} />
         </div>
-        <div>
-          <div>${name}</div>
-          <div class="right">
-            ${count} X ${sellingPrice ? formatCurrency(sellingPrice) : '0'}
-            <shop-button
-              .name=${"removeFromCartBtn"}
-              .className=${"secondary"}
-              .handleClick=${() => {
-                this.removeProductFromCart(productId);
-              }}
-            >
-              Remove
-            </shop-button>
+        <div class="info">
+          <div class="info-head">
+            <span class="title">${name}</span>
+            <span class="count">x${count}</span>
           </div>
+          <p class="price">${sellingPrice ? formatCurrency(sellingPrice) : '0'}</p>
+          <div class="count-btn">
+            <shop-count-button 
+              .value=${count} 
+              .handleIncClick=${() => {
+                this.toggleProductCount('inc', productId);
+              }}
+              .handleDecClick=${() => {
+                this.toggleProductCount('dec', productId);
+              }}
+            ></shop-count-button>
+          </div>
+        </div>
+        <div class="last-container">
+          <shop-button
+            .name=${"removeFromCartBtn"}
+            .className=${"secondary"}
+            .handleClick=${() => {
+              this.removeProductFromCart(productId);
+            }}
+          >
+            Remove
+          </shop-button>
         </div>
       </div>
     `;

@@ -20,6 +20,8 @@ export const cartStyles = css`
     }
     .cart-items li {
         display: flex;
+        background: #ffffff;
+        margin: 0.5rem 0;
     }
 
     .total {

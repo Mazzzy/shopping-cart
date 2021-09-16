@@ -5,7 +5,7 @@ import { connect } from 'pwa-helpers';
 import { store } from '../../store';
 
 import { getAvailableCartSelector } from '../../store/actions';
-import { defineCustomElement, formatCurrency, getCartItemsTotal } from '../../utils';
+import { defineCustomElement, formatCurrency, getCartItemsTotal, getDiscountOnCartItems } from '../../utils';
 
 import './cart-item';
 import '../../components/button';
@@ -37,6 +37,16 @@ export class ShopCart extends connect(store)(LitElement) {
     render() {
       const { cartItems, renderCartItem } = this;
       const cartItemsLength = cartItems && cartItems.length;
+      let discountPercent = 0;
+      let discountAmount = 0;
+      let itemsTotal = 0;
+      let grandTotal = 0;
+      if(cartItemsLength) {
+        itemsTotal = getCartItemsTotal(cartItems);
+        discountPercent = getDiscountOnCartItems(cartItems);
+        discountAmount = discountPercent * itemsTotal / 100;
+        grandTotal = itemsTotal - discountAmount;
+      }
       // repeat: directive for efficient template list items 
       return html`
         <div class="cart-row cart-header">
@@ -60,9 +70,16 @@ export class ShopCart extends connect(store)(LitElement) {
               ${cartItemsLength ? 
                 (
                   html `Total: ${" "}
-                  ${
-                    formatCurrency(getCartItemsTotal(cartItems))
-                  }
+                  ${formatCurrency(itemsTotal)}
+                  <p>
+                    Discount: ${discountPercent} %
+                  </p>
+                  <p>
+                    Discount Amount: ${formatCurrency(discountAmount)}
+                  </p>
+                  <p>
+                    Grand total: ${formatCurrency(grandTotal)}
+                  </p>
                   <shop-button
                     .name=${"proceedToCheckoutBtn"}
                     .className=${"primary"}

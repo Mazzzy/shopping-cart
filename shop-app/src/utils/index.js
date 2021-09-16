@@ -19,6 +19,10 @@ export const storeLogger = store => next => action => {
 // get totalCount from cartItems 
 export const getCartItemsTotal = (cartItems) => (cartItems.reduce((a, c) => a + c.sellingPrice * c.count, 0));
 
+// get discount value if cartItems length >=3 (atleast 3 different products (SKUs))
+// 10% discount
+export const getDiscountOnCartItems = (cartItems) => (cartItems.length >=3 ? 10: 0);
+
 // format currency value and display along with symbol
 export const formatCurrency = (num) => (`${CONSTANTS.CURRENCY} ${Number(num.toFixed(1)).toLocaleString()}`);
 

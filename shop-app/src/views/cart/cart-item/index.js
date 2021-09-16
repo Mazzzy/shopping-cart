@@ -39,13 +39,16 @@ export class CartItem extends connect(store)(LitElement) {
     const { productId, name, sellingPrice, url, count } = this;
     return html `
       <div class="cart-item">
-        <div>
+        <div class="img-container">
           <img src=${url} alt=${name} />
         </div>
-        <div>
-          <div>${name}</div>
-          <div class="right">
-            ${count} X ${sellingPrice ? formatCurrency(sellingPrice) : '0'}
+        <div class="info">
+          <div class="info-head">
+            <span class="title">${name}</span>
+            <span class="count">x${count}</span>
+          </div>
+          <p class="price">${sellingPrice ? formatCurrency(sellingPrice) : '0'}</p>
+          <div class="count-btn">
             <shop-count-button 
               .value=${count} 
               .handleIncClick=${() => {
@@ -55,16 +58,18 @@ export class CartItem extends connect(store)(LitElement) {
                 this.toggleProductCount('dec', productId);
               }}
             ></shop-count-button>
-            <shop-button
-              .name=${"removeFromCartBtn"}
-              .className=${"secondary"}
-              .handleClick=${() => {
-                this.removeProductFromCart(productId);
-              }}
-            >
-              Remove
-            </shop-button>
           </div>
+        </div>
+        <div class="last-container">
+          <shop-button
+            .name=${"removeFromCartBtn"}
+            .className=${"secondary"}
+            .handleClick=${() => {
+              this.removeProductFromCart(productId);
+            }}
+          >
+            Remove
+          </shop-button>
         </div>
       </div>
     `;

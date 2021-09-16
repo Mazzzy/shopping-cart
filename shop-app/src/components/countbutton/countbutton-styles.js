@@ -3,9 +3,9 @@ import { css } from 'lit';
 export const countButtonStyles = css`
     .count-button {
         background-color: hsl(0, 0%, 95%);
-        display: flex;
+        display: inline-flex;
         text-align: center;
-        font-size: 0.875rem;
+        font-size: 1.25rem;
         font-weight: bold;
         line-height: 2rem;
     }

@@ -1,5 +1,5 @@
 import { createSelector } from 'reselect';
-import { ADD_TO_CART, REMOVE_FROM_CART, CLEAR_CART } from '../types';
+import { ADD_TO_CART, REMOVE_FROM_CART, TOGGLE_CART_ITEM_COUNT, CLEAR_CART } from '../types';
 
 // dispatched to set product item inside cart (store)
 export const addToCart = (product) => {
@@ -14,6 +14,14 @@ export const removeFromCart = (productId) => {
   return {
     type: REMOVE_FROM_CART,
     payload: productId
+  }
+};
+
+// dispatched to count(quantity) product item based on type 'inc' or 'dec' in cart (store)
+export const toggleProductItemCountInCart = (type, productId) => {
+  return {
+    type: TOGGLE_CART_ITEM_COUNT,
+    payload: { type, productId }
   }
 };
 

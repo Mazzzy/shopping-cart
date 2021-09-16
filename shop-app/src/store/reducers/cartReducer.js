@@ -1,4 +1,4 @@
-import { ADD_TO_CART, REMOVE_FROM_CART, CLEAR_CART } from '../types';
+import { ADD_TO_CART, REMOVE_FROM_CART, TOGGLE_CART_ITEM_COUNT, CLEAR_CART } from '../types';
 
 /* note: here used cart as object specifically instead of array
  * reason: for better traversal during add and delete
@@ -19,6 +19,9 @@ export const cartReducer = (state = initialCartState, action) => {
         case REMOVE_FROM_CART:
             const updatedCartItems = getItemsForRemoveFromCart(state, action.payload);
             return { ...state, cart: updatedCartItems };
+        case TOGGLE_CART_ITEM_COUNT:
+            const updatedCountCartItems = getItemsAfterToggleItemCountFromCart(state, action.payload);
+            return { ...state, cart: updatedCountCartItems }; 
         case CLEAR_CART:
             return { ...state, cart: [] };
         default:
@@ -41,5 +44,17 @@ const getItemsForRemoveFromCart = ({ cart }, productId) => {
     if(cart.hasOwnProperty(productId)){
         delete cart[productId];
     }
+    return cart;
+}
+
+const getItemsAfterToggleItemCountFromCart = ({ cart }, { type, productId }) => {
+    if(cart.hasOwnProperty(productId)){
+        const itemCount = cart[productId].count;
+        if(type === 'inc' && itemCount <= 10 ) {
+            cart[productId].count += 1;
+        } else if(type === 'dec' && itemCount > 1 ) { 
+            cart[productId].count -= 1;
+        }
+    } 
     return cart;
 }

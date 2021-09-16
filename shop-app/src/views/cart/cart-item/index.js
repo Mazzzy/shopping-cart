@@ -2,13 +2,13 @@ import { LitElement, html } from 'lit';
 import { connect } from 'pwa-helpers';
 
 import { store } from '../../../store';
-import { removeFromCart } from '../../../store/actions';
+import { removeFromCart, toggleProductItemCountInCart } from '../../../store/actions';
 
 import { defineCustomElement, formatCurrency } from '../../../utils';
 
 import '../../../components/button';
+import '../../../components/countbutton';
 import { cartItemStyles }  from './cart-item-styles.js';
-
 export class CartItem extends connect(store)(LitElement) {
     
   static get styles() {
@@ -23,6 +23,11 @@ export class CartItem extends connect(store)(LitElement) {
       url: { type: String },
       count: { type: Number }
     };
+  }
+
+  toggleProductCount(type, productId) {
+    // toggle the product count based on type
+    store.dispatch(toggleProductItemCountInCart(type, productId))
   }
 
   removeProductFromCart(productId) {
@@ -41,6 +46,15 @@ export class CartItem extends connect(store)(LitElement) {
           <div>${name}</div>
           <div class="right">
             ${count} X ${sellingPrice ? formatCurrency(sellingPrice) : '0'}
+            <shop-count-button 
+              .value=${count} 
+              .handleIncClick=${() => {
+                this.toggleProductCount('inc', productId);
+              }}
+              .handleDecClick=${() => {
+                this.toggleProductCount('dec', productId);
+              }}
+            ></shop-count-button>
             <shop-button
               .name=${"removeFromCartBtn"}
               .className=${"secondary"}

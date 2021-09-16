@@ -31,7 +31,7 @@ export class ShopCategory extends connect(store)(LitElement) {
       try {
         const { selectedCategory } = this;
         const { id } = selectedCategory || {};
-        const getProductsURL = API_DETAILS.BASE_URL + API_DETAILS.GET_CATEGORIES + `/${id}`;
+        const getProductsURL = API_DETAILS.CATEGORY_URL + `/${id}`;
         // get products via service (API) call
         const respData = await getApiDataByUrl(getProductsURL);
         if(respData && respData.length) {

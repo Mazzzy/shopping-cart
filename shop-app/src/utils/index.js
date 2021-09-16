@@ -14,9 +14,18 @@ export const storeLogger = store => next => action => {
   return result;
 }
 
-// helpers
+// helpers ::
+
+// get totalCount from cartItems 
+export const getCartItemsTotal = (cartItems) => (cartItems.reduce((a, c) => a + c.sellingPrice * c.count, 0));
+
 // format currency value and display along with symbol
 export const formatCurrency = (num) => (`${CONSTANTS.CURRENCY} ${Number(num.toFixed(1)).toLocaleString()}`);
 
 // handle null/undefined properties for custom components
 export const escapeNullUndefinedAttrVal = (attrVal) => (attrVal || '');
+
+// to check if object is empty
+export const isEmptyObject = (obj) => {
+  return obj && Object.keys(obj).length === 0 && obj.constructor === Object;
+}

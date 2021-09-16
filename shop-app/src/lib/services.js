@@ -5,3 +5,17 @@ export const getApiDataByUrl = async (url) => {
 	});
 	return response.json();
 }
+
+// post data by url
+export const postApiDataByUrl = async (url, data) => {
+	const response = await fetch(url, { 
+		method: "POST",
+		headers: {
+	  		"Content-Type": "application/json",
+		},
+		body: JSON.stringify(data)
+	}).catch(err => {
+		return { data: { isError: true, error: err } }
+	});
+	return response.json();
+}

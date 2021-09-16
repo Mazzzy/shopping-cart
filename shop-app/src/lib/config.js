@@ -1,6 +1,7 @@
+const BASE_URL = `http://localhost:5080`;
 export const API_DETAILS = {
-    BASE_URL: 'http://localhost:5080',
-    GET_CATEGORIES: '/categories'
+    CATEGORY_URL: `${BASE_URL}/categories`,
+    ORDER_URL: `${BASE_URL}/orders`
 }
 export const CONSTANTS = {
     CURRENCY: '€',

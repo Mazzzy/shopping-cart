@@ -1,37 +1,18 @@
 const express = require('express');
-const server = express();
+const app = express();
 const cors = require('cors');
 const bodyParser = require('body-parser');
+const fs = require('fs');
 
-const { categories, getProductsByCategory } = require('./data');
+app.use(cors());
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+
 const port = 5080;
 
-server.use(cors())
-server.use(bodyParser.json());
+// routes
+const routes = require('./routes/routes.js')(app, fs);
 
-server.get('/', (req, res) => {
-    res.send('Hello from shopping cart app server.');
-});
-
-server.get('/categories', (req, res) => {
-    res.json(categories);
-});
-
-server.get('/categories/:id', (req, res) => {
-    // reading category id from the URL
-    const id = req.params.id;
-
-    // fetch products by category id from json file
-    const products = getProductsByCategory(id);
-    if(products) {
-        res.json(products);
-        return;
-    }
-    // sending 404 when not found something
-    res.status(404).send('Products for given category not found');
-   
-});
-
-server.listen(port, () => {
-   console.log(`Shopping cart mock-server listening at ${port}`);
+const server = app.listen(port, () => {
+    console.log(`Shopping cart mock-server listening at ${server.address().port}`);
 });

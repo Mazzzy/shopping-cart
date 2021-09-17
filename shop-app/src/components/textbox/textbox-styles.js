@@ -7,4 +7,7 @@ export const textboxStyles = css`
         width: 92%;
         margin: 0.5rem 0;
     }
+    .input.error {
+        border: 1px solid red;
+    }
 `;

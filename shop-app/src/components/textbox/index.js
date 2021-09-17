@@ -4,17 +4,14 @@ import { textboxStyles }  from './textbox-styles.js';
 
 export class Textbox extends LitElement {
     
-    static get styles() {
-      return textboxStyles;
-    }
-
     static get properties() {
       return {
         type: { type: String },
         name: { type: String },
         className: { type: String },
         value: { type: Object },
-        handleChange: { type: Function }
+        handleChange: { type: Function },
+        hasError: { type: Function }
       };
     }
 
@@ -23,17 +20,24 @@ export class Textbox extends LitElement {
       console.log('Received instructions to update : ' + changedProperties)
     }
 
+    createRenderRoot() {
+      return this;
+    }
+
     render() {
-      const { type, name, className, value, handleChange } = this;
+      const { type, name, className, value, handleChange, hasError } = this;
       const sanitizedType = escapeNullUndefinedAttrVal(type);
       const sanitizedName = escapeNullUndefinedAttrVal(name);
       const sanitizedClassName = escapeNullUndefinedAttrVal(className);
       
       return html`
+        <style>
+          ${textboxStyles}
+        </style>
         <input 
           type=${sanitizedType || 'text'}
           name=${sanitizedName} 
-          class=${`input ${sanitizedClassName}`} 
+          class=${`input ${sanitizedClassName} ${hasError ? hasError(name) : ''}`} 
           value=${value}
           @input=${handleChange} 
         />

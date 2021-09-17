@@ -44,14 +44,13 @@ export class ProductItem extends connect(store)(LitElement) {
           <div class="product-price">
             <div>${sellingPrice ? formatCurrency(sellingPrice) : '0'}</div>
             <shop-button
+              .btnCaption=${"Add to cart"}
               .name=${"addToCartBtn"}
               .className=${"primary"}
               .handleClick=${() => {
                 this.addProductToCart({ productId, name, url, sellingPrice });
               }}
-            >
-              Add to cart
-            </shop-button>
+            ></shop-button>
           </div>
         </div>
       </shop-card>

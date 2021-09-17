@@ -3,7 +3,7 @@ import { repeat } from 'lit/directives/repeat.js';
 import { connect } from 'pwa-helpers';
 import { store } from '../../../store';
 
-import { defineCustomElement, formatCurrency, getCartItemsTotal } from '../../../utils';
+import { defineCustomElement, formatCurrency, getAmountDiscountAndGrandTotal } from '../../../utils';
 import { API_DETAILS } from '../../../lib/config';
 import { postApiDataByUrl } from '../../../lib/services';
 import { 
@@ -90,22 +90,19 @@ export class ShopCheckoutSummary extends connect(store)(LitElement) {
   render() {
     const { cartItems, renderSummaryCartItem, triggerPlaceOrder } = this;
     const cartItemsLength = cartItems && cartItems.length;
-    let itemsTotal = 0;
-    let shippingAmount = 0;
-    let discountAmount = 0;
-    let grandTotal = 0;
+    // get calculated amount details
+    const { 
+      itemsTotal, 
+      discountPercent, 
+      discountAmount, 
+      grandTotal } = getAmountDiscountAndGrandTotal(cartItems);
+
     let amountDetails = {}
-
     if(cartItemsLength !== 0) {
-      itemsTotal = getCartItemsTotal(cartItems);
-      shippingAmount = 5;
-      discountAmount = 10;
-      grandTotal = itemsTotal + shippingAmount - discountAmount;
-
       // to store amount details in order record
       amountDetails = {
         itemsTotal,
-        shippingAmount,
+        discountPercent,
         discountAmount,
         grandTotal
       }
@@ -135,11 +132,9 @@ export class ShopCheckoutSummary extends connect(store)(LitElement) {
                 </span>
               </p>
               <p class="total-field">
-                shipping
+                Discount (%)
                 <span class="price">
-                  ${
-                    formatCurrency(shippingAmount)
-                  }
+                  ${discountPercent}
                 </span>
               </p>
               <p class="total-field">
@@ -160,6 +155,7 @@ export class ShopCheckoutSummary extends connect(store)(LitElement) {
               </p>
             </div>
             <shop-button
+              .btnCaption=${"Pay & Place Order"}
               .name=${"placeOrderBtn"}
               .className=${"primary"}
               .handleClick=${
@@ -167,9 +163,7 @@ export class ShopCheckoutSummary extends connect(store)(LitElement) {
                   triggerPlaceOrder(amountDetails) 
                 }
               }
-            >
-              Pay & Place Order
-            </shop-button>
+            ></shop-button>
           `) : 
           (html `<span>Order summary is empty</span`)
         }

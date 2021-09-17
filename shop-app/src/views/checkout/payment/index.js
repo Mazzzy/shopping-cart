@@ -17,16 +17,18 @@ export class ShopPayment extends connect(store)(LitElement) {
       cardHolderName: { type: String },
       cardNumber: { type: Number },
       cardExpiry: { type: String },
-      cardCVV: { type: Number }
+      cardCVV: { type: Number },
+      errors: { type: Array }
     };
   }
 
   constructor () {
     super();
     this.cardHolderName = '';
-    this.cardNumber = 0;
+    this.cardNumber = '';
     this.cardExpiry = '';
-    this.cardCVV = 0;
+    this.cardCVV = '';
+    this.errors = [];
   }
 
   handleTxtChange = (e) => {
@@ -35,25 +37,84 @@ export class ShopPayment extends connect(store)(LitElement) {
     this[name] = value;
   }
 
-  validateForm({ cardHolderName, cardNumber, cardExpiry, cardCVV }) {
-    return cardHolderName && cardNumber && cardExpiry && cardCVV;
-  }
-
   triggerEnableOrderSummary() {
     this.enableOrderSummary(true)
   }
 
+  // submit payment details via form
+  submit(e) {
+    e.preventDefault();
+    let form = e.target;
+    this.errors = this.checkForErrors(form);
+    if (!this.errors.length) {
+      // if form contents are valid then move to next step
+      this.triggerEnableOrderSummary();
+      
+      // store payment details in store
+      const formData = new FormData(form);
+      const cardHolderName = formData.get('cardHolderName');
+      const cardNumber = formData.get('cardNumber');
+      const cardExpiry = formData.get('cardExpiry');
+      const cardCVV = formData.get('cardCVV');
+      store.dispatch(addPaymentInCheckout({ cardHolderName, cardNumber, cardExpiry, cardCVV }));
+    }
+  }
+
+  // validate form fields
+  checkForErrors(form) {
+    const { cardHolderName, cardNumber, cardExpiry, cardCVV } = form;
+    let errors = [];
+  
+    if (!cardHolderName.value) {
+      errors.push('cardHolderName');
+    }
+
+    if (!cardNumber.value) {
+      errors.push('cardNumber');
+    }
+
+    if (!cardExpiry.value) {
+      errors.push('cardExpiry');
+    }
+
+    if (!cardCVV.value) {
+      errors.push('cardCVV');
+    }
+
+    return errors;
+  }
+
+  // on change check and update errors for form fields
+  formValueUpdated(e) {
+    let errorList = [...this.errors];
+    if (!e.target.value) {
+      errorList.push(e.target.name);
+    } else {
+      let indexOfError = errorList.indexOf(e.target.name);
+      if (indexOfError >= 0) {
+        errorList.splice(indexOfError, 1);
+      }
+    }
+    this.errors = [...errorList];
+  }
+  
+
   render() {
-    const { cardHolderName, cardNumber, cardExpiry, cardCVV, handleTxtChange, validateForm } = this;
-    
+    const { cardHolderName, cardNumber, cardExpiry, cardCVV, handleTxtChange } = this;
+    const hasFormError = (name) => (this.errors.indexOf(name) >= 0 ? 'error' : '');
+
     return html`
       <h1>Payment Details:</h1>
       <div class="payment-container">
-        <form method="POST">
+        <form 
+          @submit="${(e) => this.submit(e)}"
+          @change="${(e) => this.formValueUpdated(e)}"
+        >
           <ul class="form-container">
             <li>
               <label for="cardHolderName">Card Holder name:</label>
               <shop-textbox
+                .hasError=${hasFormError}
                 .name=${"cardHolderName"}
                 .value=${cardHolderName}
                 .handleChange=${handleTxtChange}
@@ -62,6 +123,7 @@ export class ShopPayment extends connect(store)(LitElement) {
             <li>
               <label for="cardNumber">Card number:</label>
               <shop-textbox
+                .hasError=${hasFormError}
                 .type=${"number"}
                 .name=${"cardNumber"}
                 .value=${cardNumber}
@@ -71,6 +133,8 @@ export class ShopPayment extends connect(store)(LitElement) {
             <li>
               <label for="cardExpiry">Card Expiry:</label>
               <shop-textbox
+                .hasError=${hasFormError}
+                .type=${"date"}
                 .name=${"cardExpiry"}
                 .value=${cardExpiry}
                 .handleChange=${handleTxtChange}
@@ -79,6 +143,7 @@ export class ShopPayment extends connect(store)(LitElement) {
             <li>
               <label for="cardCVV">Card CVV:</label>
               <shop-textbox
+                .hasError=${hasFormError}
                 .type=${"password"}
                 .number=${"number"}
                 .name=${"cardCVV"}
@@ -87,23 +152,12 @@ export class ShopPayment extends connect(store)(LitElement) {
               />
             </li>
             <li>
-              ${validateForm({ cardHolderName, cardNumber, cardExpiry, cardCVV }) && (
-                html `
-                  <shop-button
-                    .type=${"submit"}
-                    .name=${"proceedToOrderBtn"}
-                    .className=${"primary"}
-                    .handleClick=${() => {
-                      console.log('Order place?')
-                      this.triggerEnableOrderSummary();
-                      // store payment details in store
-                      store.dispatch(addPaymentInCheckout({ cardHolderName, cardNumber, cardExpiry, cardCVV }));
-                    }}
-                  >
-                    Place Order
-                  </shop-button>
-                `)
-              }
+              <shop-button
+                .type=${"submit"}
+                .name=${"proceedToOrderBtn"}
+                .btnCaption=${"Place Order"}
+                .className=${"primary"}
+              />
             </li>
           </ul>
         </form>

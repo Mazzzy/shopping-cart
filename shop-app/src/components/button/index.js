@@ -12,25 +12,34 @@ export class Button extends LitElement {
       return {
         type: { type: String },
         name: { type: String },
+        btnCaption: { type: String },
         className: { type: String },
         handleClick: { type: Function }
       };
     }
 
+    createRenderRoot() {
+      return this;
+    }
+
     render() {
-      const { type, name, className, handleClick } = this;
+      const { type, name, btnCaption, className, handleClick } = this;
       const sanitizedType = escapeNullUndefinedAttrVal(type);
       const sanitizedName = escapeNullUndefinedAttrVal(name);
+      const sanitizedBtnCaption = escapeNullUndefinedAttrVal(btnCaption);
       const sanitizedClassName = escapeNullUndefinedAttrVal(className);
       
       return html`
+        <style>
+          ${buttonStyles}
+        </style>
         <button 
           type=${sanitizedType || 'button'}
           class=${`button ${sanitizedClassName}`} 
           name=${sanitizedName} 
           @click=${handleClick}
         >
-          <slot></slot>
+          ${sanitizedBtnCaption}
         </button>
       `;
     }

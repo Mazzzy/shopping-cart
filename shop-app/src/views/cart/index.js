@@ -5,7 +5,7 @@ import { connect } from 'pwa-helpers';
 import { store } from '../../store';
 
 import { getAvailableCartSelector } from '../../store/actions';
-import { defineCustomElement, formatCurrency, getCartItemsTotal } from '../../utils';
+import { defineCustomElement, formatCurrency, getAmountDiscountAndGrandTotal } from '../../utils';
 
 import './cart-item';
 import '../../components/button';
@@ -37,6 +37,13 @@ export class ShopCart extends connect(store)(LitElement) {
     render() {
       const { cartItems, renderCartItem } = this;
       const cartItemsLength = cartItems && cartItems.length;
+      // get calculated amount details
+      const { 
+        itemsTotal, 
+        discountPercent, 
+        discountAmount, 
+        grandTotal } = getAmountDiscountAndGrandTotal(cartItems);
+      
       // repeat: directive for efficient template list items 
       return html`
         <div class="cart-row cart-header">
@@ -59,11 +66,21 @@ export class ShopCart extends connect(store)(LitElement) {
             <div>
               ${cartItemsLength ? 
                 (
-                  html `Total: ${" "}
-                  ${
-                    formatCurrency(getCartItemsTotal(cartItems))
-                  }
+                  html `
+                  <p>
+                    Total: ${formatCurrency(itemsTotal)}
+                  </p>
+                  <p>
+                    Discount: ${discountPercent} %
+                  </p>
+                  <p>
+                    Discount Amount: ${formatCurrency(discountAmount)}
+                  </p>
+                  <p>
+                    Grand total: <span class="grand-total">${formatCurrency(grandTotal)}</span>
+                  </p>
                   <shop-button
+                    .btnCaption=${"Proceed"}
                     .name=${"proceedToCheckoutBtn"}
                     .className=${"primary"}
                     .handleClick=${() => {
@@ -71,9 +88,7 @@ export class ShopCart extends connect(store)(LitElement) {
                       // move to checkout view
                       Router.go('/checkout');
                     }}
-                  >
-                    Proceed
-                  </shop-button>
+                  ></shop-button>
                   `
                 ) : 
                 (html ``)

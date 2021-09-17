@@ -5,7 +5,7 @@ import { connect } from 'pwa-helpers';
 import { store } from '../../store';
 
 import { getAvailableCartSelector } from '../../store/actions';
-import { defineCustomElement, formatCurrency, getCartItemsTotal, getDiscountOnCartItems } from '../../utils';
+import { defineCustomElement, formatCurrency, getAmountDiscountAndGrandTotal } from '../../utils';
 
 import './cart-item';
 import '../../components/button';
@@ -37,16 +37,13 @@ export class ShopCart extends connect(store)(LitElement) {
     render() {
       const { cartItems, renderCartItem } = this;
       const cartItemsLength = cartItems && cartItems.length;
-      let discountPercent = 0;
-      let discountAmount = 0;
-      let itemsTotal = 0;
-      let grandTotal = 0;
-      if(cartItemsLength) {
-        itemsTotal = getCartItemsTotal(cartItems);
-        discountPercent = getDiscountOnCartItems(cartItems);
-        discountAmount = discountPercent * itemsTotal / 100;
-        grandTotal = itemsTotal - discountAmount;
-      }
+      // get calculated amount details
+      const { 
+        itemsTotal, 
+        discountPercent, 
+        discountAmount, 
+        grandTotal } = getAmountDiscountAndGrandTotal(cartItems);
+      
       // repeat: directive for efficient template list items 
       return html`
         <div class="cart-row cart-header">
@@ -69,8 +66,10 @@ export class ShopCart extends connect(store)(LitElement) {
             <div>
               ${cartItemsLength ? 
                 (
-                  html `Total: ${" "}
-                  ${formatCurrency(itemsTotal)}
+                  html `
+                  <p>
+                    Total: ${formatCurrency(itemsTotal)}
+                  </p>
                   <p>
                     Discount: ${discountPercent} %
                   </p>
@@ -78,7 +77,7 @@ export class ShopCart extends connect(store)(LitElement) {
                     Discount Amount: ${formatCurrency(discountAmount)}
                   </p>
                   <p>
-                    Grand total: ${formatCurrency(grandTotal)}
+                    Grand total: <span class="grand-total">${formatCurrency(grandTotal)}</span>
                   </p>
                   <shop-button
                     .name=${"proceedToCheckoutBtn"}

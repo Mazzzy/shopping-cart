@@ -40,4 +40,8 @@ export const cartStyles = css`
     .total div {
         font-size: 2rem;
     }
+
+    .total .grand-total {
+        color: hsl(22, 65%, 57%);
+    }
 `;

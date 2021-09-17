@@ -47,11 +47,10 @@ export class Modal extends LitElement {
           <slot></slot>
           </div>
           <shop-button
+            .btnCaption=${sanitizedActionBtnCaption}
             .className=${"primary modal-action-btn"}
             .handleClick=${handleClick}
-          >
-            ${sanitizedActionBtnCaption}
-          </shop-button>
+          ></shop-button>
         </div>
       </div>
     `;

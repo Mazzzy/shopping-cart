@@ -80,6 +80,7 @@ export class ShopCart extends connect(store)(LitElement) {
                     Grand total: <span class="grand-total">${formatCurrency(grandTotal)}</span>
                   </p>
                   <shop-button
+                    .btnCaption=${"Proceed"}
                     .name=${"proceedToCheckoutBtn"}
                     .className=${"primary"}
                     .handleClick=${() => {
@@ -87,9 +88,7 @@ export class ShopCart extends connect(store)(LitElement) {
                       // move to checkout view
                       Router.go('/checkout');
                     }}
-                  >
-                    Proceed
-                  </shop-button>
+                  ></shop-button>
                   `
                 ) : 
                 (html ``)

@@ -155,6 +155,7 @@ export class ShopCheckoutSummary extends connect(store)(LitElement) {
               </p>
             </div>
             <shop-button
+              .btnCaption=${"Pay & Place Order"}
               .name=${"placeOrderBtn"}
               .className=${"primary"}
               .handleClick=${
@@ -162,9 +163,7 @@ export class ShopCheckoutSummary extends connect(store)(LitElement) {
                   triggerPlaceOrder(amountDetails) 
                 }
               }
-            >
-              Pay & Place Order
-            </shop-button>
+            ></shop-button>
           `) : 
           (html `<span>Order summary is empty</span`)
         }

@@ -62,14 +62,13 @@ export class CartItem extends connect(store)(LitElement) {
         </div>
         <div class="last-container">
           <shop-button
+            .btnCaption=${"Remove"}
             .name=${"removeFromCartBtn"}
             .className=${"secondary"}
             .handleClick=${() => {
               this.removeProductFromCart(productId);
             }}
-          >
-            Remove
-          </shop-button>
+          ></shop-button>
         </div>
       </div>
     `;

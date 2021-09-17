@@ -90,7 +90,8 @@ export class ShopPayment extends connect(store)(LitElement) {
               ${validateForm({ cardHolderName, cardNumber, cardExpiry, cardCVV }) && (
                 html `
                   <shop-button
-                    .type=${"submit"}
+                    .btnCaption=${"Place Order"}
+                    .type=${"button"}
                     .name=${"proceedToOrderBtn"}
                     .className=${"primary"}
                     .handleClick=${() => {
@@ -99,9 +100,7 @@ export class ShopPayment extends connect(store)(LitElement) {
                       // store payment details in store
                       store.dispatch(addPaymentInCheckout({ cardHolderName, cardNumber, cardExpiry, cardCVV }));
                     }}
-                  >
-                    Place Order
-                  </shop-button>
+                  ></shop-button>
                 `)
               }
             </li>
